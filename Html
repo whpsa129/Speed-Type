@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Typing Speedrun Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #sentence { font-size: 24px; margin-bottom: 20px; }
+        #input { width: 100%; padding: 10px; font-size: 18px; }
+        #result { margin-top: 20px; }
+        button { margin-top: 10px; padding: 10px; font-size: 16px; }
+        #scoreboard { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div id="sentence">Type this sentence as fast as you can!</div>
+    <input type="text" id="input" placeholder="Start typing here..." />
+    <div id="result"></div>
+    <button id="restart">Restart Game</button>
+    <div id="scoreboard"></div>
+
+    <script>
+        const sentences = [
+            "The quick brown fox jumps over the lazy dog.",
+            "A journey of a thousand miles begins with a single step.",
+            "To be or not to be, that is the question.",
+"Daisy left me for noah.",
+"I need some mental help for sure.",
+          "Fun Fact one time i named a rat Indu.",
+          "Do dogs eat grass?",
+          "Did you know the owner of this is Swaraj Goswami?",
+        ];
+        let startTime, endTime;
+        let scores = [];
+
+        function startGame() {
+            startTime = null;
+            document.getElementById('result').innerText = '';
+            document.getElementById('input').value = '';
+            document.getElementById('input').focus();
+            document.getElementById('sentence').innerText = sentences[Math.floor(Math.random() * sentences.length)];
+        }
+
+        document.getElementById('input').addEventListener('focus', function() {
+            if (!startTime) {
+                startTime = new Date();
+            }
+        });
+
+        document.getElementById('input').addEventListener('input', function() {
+            if (this.value === document.getElementById('sentence').innerText) {
+                endTime = new Date();
+                const timeTaken = (endTime - startTime) / 1000;
+                scores.push(timeTaken);
+                document.getElementById('result').innerText = `Well done! You took ${timeTaken} seconds.`;
+                updateScoreboard();
+            }
+        });
+
+        document.getElementById('restart').addEventListener('click', startGame);
+        
+        function updateScoreboard() {
+            const scoreboard = document.getElementById('scoreboard');
+            scoreboard.innerHTML = '<h3>Scoreboard</h3>';
+            scores.forEach((score, index) => {
+                scoreboard.innerHTML += `<p>Attempt ${index + 1}: ${score} seconds</p>`;
+            });
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
+
